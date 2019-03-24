@@ -27,6 +27,7 @@ macro(REQUIRE_BOOST_HEADERS)
     message(FATAL_ERROR, ${fatal_message})
   endif()
   include_directories(SYSTEM "${Boost_INCLUDE_DIRS}")
+  message(STATUS "bluebberry : include directores already. ${Boost_INCLUDE_DIRS}")
 endmacro()
 
 macro(REQUIRE_BOOST_LIBRARIES libs)

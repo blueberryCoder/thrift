@@ -25,33 +25,35 @@ set(TEST_PREFIX "c_glib")
 #Make sure gen-cpp and gen-c_glib files can be included
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
+
+
 # Create the thrift C test library
 set(testgenc_SOURCES
-    gen-c_glib/t_test_debug_proto_test_types.c
-    gen-c_glib/t_test_enum_test_types.c
-    gen-c_glib/t_test_enum_test_service.c
-    gen-c_glib/t_test_empty_service.c
-    gen-c_glib/t_test_inherited.c
-    gen-c_glib/t_test_optional_required_test_types.c
-    gen-c_glib/t_test_reverse_order_service.c
-    gen-c_glib/t_test_second_service.c
-    gen-c_glib/t_test_service_for_exception_with_a_map.c
-    gen-c_glib/t_test_srv.c
-    gen-c_glib/t_test_thrift_test.c
-    gen-c_glib/t_test_thrift_test_types.c
-    gen-c_glib/t_test_debug_proto_test_types.h
-    gen-c_glib/t_test_enum_test_types.h
-    gen-c_glib/t_test_enum_test_service.h
-    gen-c_glib/t_test_empty_service.h
-    gen-c_glib/t_test_inherited.h
-    gen-c_glib/t_test_optional_required_test_types.h
-    gen-c_glib/t_test_reverse_order_service.h
-    gen-c_glib/t_test_second_service.h
-    gen-c_glib/t_test_service_for_exception_with_a_map.h
-    gen-c_glib/t_test_srv.h
-    gen-c_glib/t_test_thrift_test.h
-    gen-c_glib/t_test_thrift_test_types.h
-)
+        gen-c_glib/t_test_debug_proto_test_types.c
+        gen-c_glib/t_test_enum_test_types.c
+        gen-c_glib/t_test_enum_test_service.c
+        gen-c_glib/t_test_empty_service.c
+        gen-c_glib/t_test_inherited.c
+        gen-c_glib/t_test_optional_required_test_types.c
+        gen-c_glib/t_test_reverse_order_service.c
+        gen-c_glib/t_test_second_service.c
+        gen-c_glib/t_test_service_for_exception_with_a_map.c
+        gen-c_glib/t_test_srv.c
+        gen-c_glib/t_test_thrift_test.c
+        gen-c_glib/t_test_thrift_test_types.c
+        gen-c_glib/t_test_debug_proto_test_types.h
+        gen-c_glib/t_test_enum_test_types.h
+        gen-c_glib/t_test_enum_test_service.h
+        gen-c_glib/t_test_empty_service.h
+        gen-c_glib/t_test_inherited.h
+        gen-c_glib/t_test_optional_required_test_types.h
+        gen-c_glib/t_test_reverse_order_service.h
+        gen-c_glib/t_test_second_service.h
+        gen-c_glib/t_test_service_for_exception_with_a_map.h
+        gen-c_glib/t_test_srv.h
+        gen-c_glib/t_test_thrift_test.h
+        gen-c_glib/t_test_thrift_test_types.h
+        )
 
 add_library(testgenc STATIC ${testgenc_SOURCES})
 LINK_AGAINST_THRIFT_LIBRARY(testgenc thrift_c_glib)
@@ -109,28 +111,34 @@ add_test(NAME testoptionalrequired COMMAND testoptionalrequired)
 include_directories("${PROJECT_SOURCE_DIR}/test/c_glib/src" "${CMAKE_CURRENT_BINARY_DIR}/gen-c_glib")
 
 add_executable(testthrifttest testthrifttest.c
-    ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_test_handler.c
-    ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_test_handler.h
-    ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_second_service_handler.c
-    ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_second_service_handler.h
-    gen-c_glib/t_test_thrift_test_types.h)
+        ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_test_handler.c
+        ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_test_handler.h
+        ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_second_service_handler.c
+        ${PROJECT_SOURCE_DIR}/test/c_glib/src/thrift_second_service_handler.h
+        gen-c_glib/t_test_thrift_test_types.h)
 target_link_libraries(testthrifttest testgenc)
 add_test(NAME testthrifttest COMMAND testthrifttest)
 
-
-if(BUILD_CPP)
+if (BUILD_CPP)
 
     include_directories("${PROJECT_SOURCE_DIR}/lib/cpp/src")
+    # bluebberry
+    include(BoostMacros)
+    REQUIRE_BOOST_HEADERS()
+
+    # bblueebery
+    include_directories(SYSTEM "${OPENSSL_INCLUDE_DIR}")
+    message(STATUS "opensll header:${OPENSSL_INCLUDE_DIR}")
 
     # Create the thrift C++ test library
     set(testgenc_cpp_SOURCES
-        gen-cpp/ThriftTest.cpp
-        gen-cpp/ThriftTest_constants.cpp
-        gen-cpp/ThriftTest_types.cpp
-        gen-cpp/ThriftTest.h
-        gen-cpp/ThriftTest_constants.h
-        gen-cpp/ThriftTest_types.h
-    )
+            gen-cpp/ThriftTest.cpp
+            gen-cpp/ThriftTest_constants.cpp
+            gen-cpp/ThriftTest_types.cpp
+            gen-cpp/ThriftTest.h
+            gen-cpp/ThriftTest_constants.h
+            gen-cpp/ThriftTest_types.h
+            )
 
     add_library(testgenc_cpp STATIC ${testgenc_cpp_SOURCES})
     LINK_AGAINST_THRIFT_LIBRARY(testgenc_cpp thrift)
@@ -143,60 +151,60 @@ if(BUILD_CPP)
     target_link_libraries(testthrifttestclient testgenc testgenc_cpp ${ZLIB_LIBRARIES})
     add_test(NAME testthrifttestclient COMMAND testthrifttestclient)
 
-endif(BUILD_CPP)
+endif (BUILD_CPP)
 
 #
 # Common thrift code generation rules
 #
 
 add_custom_command(OUTPUT
-    gen-c_glib/t_test_debug_proto_test_types.c
-    gen-c_glib/t_test_debug_proto_test_types.h
-    gen-c_glib/t_test_empty_service.c
-    gen-c_glib/t_test_empty_service.h
-    gen-c_glib/t_test_inherited.c
-    gen-c_glib/t_test_inherited.h
-    gen-c_glib/t_test_reverse_order_service.c
-    gen-c_glib/t_test_reverse_order_service.h
-    gen-c_glib/t_test_service_for_exception_with_a_map.c
-    gen-c_glib/t_test_service_for_exception_with_a_map.h
-    gen-c_glib/t_test_srv.c
-    gen-c_glib/t_test_srv.h
-    COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/DebugProtoTest.thrift
-)
+        gen-c_glib/t_test_debug_proto_test_types.c
+        gen-c_glib/t_test_debug_proto_test_types.h
+        gen-c_glib/t_test_empty_service.c
+        gen-c_glib/t_test_empty_service.h
+        gen-c_glib/t_test_inherited.c
+        gen-c_glib/t_test_inherited.h
+        gen-c_glib/t_test_reverse_order_service.c
+        gen-c_glib/t_test_reverse_order_service.h
+        gen-c_glib/t_test_service_for_exception_with_a_map.c
+        gen-c_glib/t_test_service_for_exception_with_a_map.h
+        gen-c_glib/t_test_srv.c
+        gen-c_glib/t_test_srv.h
+        COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/DebugProtoTest.thrift
+        )
 
 add_custom_command(OUTPUT
-    gen-c_glib/t_test_enum_test_types.c
-    gen-c_glib/t_test_enum_test_types.h
-    gen-c_glib/t_test_enum_test_service.c
-    gen-c_glib/t_test_enum_test_service.h
-    COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/EnumTest.thrift
-)
+        gen-c_glib/t_test_enum_test_types.c
+        gen-c_glib/t_test_enum_test_types.h
+        gen-c_glib/t_test_enum_test_service.c
+        gen-c_glib/t_test_enum_test_service.h
+        COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/EnumTest.thrift
+        )
 
 add_custom_command(OUTPUT
-    gen-c_glib/t_test_optional_required_test_types.c
-    gen-c_glib/t_test_optional_required_test_types.h
-    COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/OptionalRequiredTest.thrift
-)
+        gen-c_glib/t_test_optional_required_test_types.c
+        gen-c_glib/t_test_optional_required_test_types.h
+        COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/OptionalRequiredTest.thrift
+        )
 
 add_custom_command(OUTPUT
-    gen-c_glib/t_test_second_service.c
-    gen-c_glib/t_test_thrift_test.c
-    gen-c_glib/t_test_thrift_test_types.c
-    gen-c_glib/t_test_second_service.h
-    gen-c_glib/t_test_thrift_test.h
-    gen-c_glib/t_test_thrift_test_types.h
-    COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/ThriftTest.thrift
-)
+        gen-c_glib/t_test_second_service.c
+        gen-c_glib/t_test_thrift_test.c
+        gen-c_glib/t_test_thrift_test_types.c
+        gen-c_glib/t_test_second_service.h
+        gen-c_glib/t_test_thrift_test.h
+        gen-c_glib/t_test_thrift_test_types.h
+        COMMAND ${THRIFT_COMPILER} --gen c_glib ${PROJECT_SOURCE_DIR}/test/ThriftTest.thrift
+        )
 
 add_custom_command(OUTPUT
-    gen-cpp/ThriftTest.cpp
-    gen-cpp/ThriftTest_constants.cpp
-    gen-cpp/ThriftTest_types.cpp
-    gen-cpp/ThriftTest.h
-    gen-cpp/ThriftTest_constants.h
-    gen-cpp/ThriftTest_types.h
-    COMMAND ${THRIFT_COMPILER} --gen cpp ${PROJECT_SOURCE_DIR}/test/ThriftTest.thrift
-)
+        gen-cpp/ThriftTest.cpp
+        gen-cpp/ThriftTest_constants.cpp
+        gen-cpp/ThriftTest_types.cpp
+        gen-cpp/ThriftTest.h
+        gen-cpp/ThriftTest_constants.h
+        gen-cpp/ThriftTest_types.h
+        COMMAND ${THRIFT_COMPILER} --gen cpp ${PROJECT_SOURCE_DIR}/test/ThriftTest.thrift
+        )
 
 # TODO: Add memory checks using ctest_memcheck or similar

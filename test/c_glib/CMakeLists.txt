@@ -21,6 +21,8 @@
 include(ThriftMacros)
 
 find_package(GLIB REQUIRED COMPONENTS gobject)
+include_directories(SYSTEM "${OPENSSL_INCLUDE_DIR}")
+
 include_directories(SYSTEM "${GLIB_INCLUDE_DIR}")
 include_directories(SYSTEM "${GLIBCONFIG_INCLUDE_DIR}")
 

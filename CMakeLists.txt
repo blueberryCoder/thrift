@@ -18,7 +18,6 @@
 #
 
 cmake_minimum_required(VERSION 3.4)
-
 if(POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)  # package version behavior added in cmake 3.0
 endif()
@@ -31,9 +30,15 @@ endif()
 set(thrift_VERSION "0.13.0")
 set(PACKAGE_VERSION ${thrift_VERSION})
 
+set(OPENSSL_ROOT_DIR /usr/local/Cellar/openssl/1.0.2n)
+set(ZLIB_ROOT_DIR /usr/local/opt/zlib)
+set(LIBEVENT_DIR /usr/local/Cellar/libevent/2.1.8)
+set(BOOST_ROOT /usr/local/Cellar/boost@1.60/1.60.0)
+set(Boost_INCLUDE_DIRS ${BOOST_ROOT}/include)
+#set(${CMAKE_CXX_FLAGS} "${CMAKE_CXX_FLAGS} -I${Boost_INCLUDE_DIRS}")
+
 project("thrift" VERSION ${PACKAGE_VERSION})
 message(STATUS "Configuring ${CMAKE_PROJECT_NAME} ${thrift_VERSION}")
-
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/build/cmake")
 
@@ -93,6 +98,7 @@ if(BUILD_CPP)
         if(WITH_LIBEVENT AND WITH_ZLIB AND WITH_OPENSSL)
             add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/cpp)
         else()
+            message(STATUS ${WITH_LIBEVENT} ${WITH_ZLIB} ${WITH_OPENSSL})
             message(WARNING "libevent and/or ZLIB and/or OpenSSL not found or disabled; will not build some tests")
         endif()
     endif()

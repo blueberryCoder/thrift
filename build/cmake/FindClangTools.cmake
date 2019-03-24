@@ -8,7 +8,7 @@
 #  run-clang-tidy_FOUND
 #  ClangTools::run-clang-tidy
 
-include_guard()
+#include_guard()
 include(FindPackageHandleStandardArgs)
 
 foreach(program_name IN ITEMS clang-tidy clang-apply-replacements)
